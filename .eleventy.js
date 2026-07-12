@@ -27,6 +27,7 @@ module.exports = (config) => {
   config.addJavaScriptFunction('image', imageShortcode)
   config.addPassthroughCopy({
     'src/assets/icons/favicon': '/assets/icons/favicon',
+    'src/assets/apps': '/assets/apps',
   })
 
   return {

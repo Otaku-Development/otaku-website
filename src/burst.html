@@ -1,0 +1,334 @@
+---
+permalink: /burst/index.html
+eleventyExcludeFromCollections: true
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Burst — turn burst photos into looping GIFs</title>
+  <meta name="description" content="Burst turns burst photos, Live Photos, and short videos into looping GIFs and MP4s — on your iPhone, on-device, no account. Pay once for Pro.">
+  <meta property="og:title" content="Burst — turn burst photos into looping GIFs">
+  <meta property="og:description" content="Hold the shutter, get thirty photos. Burst turns them into one loop.">
+  <meta property="og:image" content="https://otaku-dev.co.uk/assets/apps/burst/frame-2.jpg">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --ink: #0c0c0d;
+      --paper: #ffffff;
+      --quiet: #6e6e73;
+      --hairline: #e4e4e7;
+      --record: #e5484d;
+      --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.6;
+    }
+    a { color: inherit; }
+
+    .wordmark {
+      font-weight: 800;
+      letter-spacing: 0.32em;
+      text-indent: 0.32em; /* recentre after tracking */
+      text-transform: uppercase;
+    }
+
+    /* ---- masthead ---- */
+    .masthead {
+      background: var(--ink);
+      color: var(--paper);
+      text-align: center;
+      padding: 4.5rem 1.5rem 4rem;
+    }
+    .masthead h1 { font-size: clamp(2.2rem, 7vw, 3.4rem); }
+    .masthead p.tag {
+      font-size: clamp(1.1rem, 3vw, 1.35rem);
+      margin-top: 0.9rem;
+      color: #d8d8dc;
+    }
+    .masthead .sub {
+      max-width: 36rem;
+      margin: 0.9rem auto 0;
+      color: #98989e;
+      font-size: 1rem;
+    }
+
+    /* ---- contact sheet ---- */
+    .sheet {
+      max-width: 72rem;
+      margin: -2.2rem auto 0;
+      padding: 0 1.25rem 1rem;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr) 1.35fr;
+      gap: 0.8rem;
+    }
+    .cell { min-width: 0; }
+    .cell img, .loop { width: 100%; border-radius: 10px; display: block; }
+    .cell figcaption, .loop-caption {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--quiet);
+      margin-top: 0.45rem;
+      white-space: nowrap;
+    }
+    .loop {
+      position: relative;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      background: var(--ink);
+    }
+    .loop img {
+      position: absolute;
+      inset: 0;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      animation: burst-loop 1.6s steps(1) infinite;
+    }
+    .loop img:nth-child(2) { animation-delay: 0.4s; }
+    .loop img:nth-child(3) { animation-delay: 0.8s; }
+    .loop img:nth-child(4) { animation-delay: 1.2s; }
+    @keyframes burst-loop {
+      0%, 24.9% { opacity: 1; }
+      25%, 100% { opacity: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .loop img { animation: none; }
+      .loop img:first-child { opacity: 1; }
+    }
+    .loop-badge {
+      position: absolute;
+      top: 0.6rem;
+      left: 0.6rem;
+      z-index: 2;
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      color: #fff;
+      background: rgba(12, 12, 13, 0.72);
+      border-radius: 999px;
+      padding: 0.25rem 0.7rem;
+    }
+    .loop-badge::before {
+      content: "●";
+      color: var(--record);
+      margin-right: 0.4rem;
+    }
+    .sheet-note {
+      max-width: 72rem;
+      margin: 0 auto;
+      padding: 0 1.25rem 3rem;
+      color: var(--quiet);
+      font-size: 0.95rem;
+    }
+
+    /* ---- how it works ---- */
+    .how {
+      max-width: 44rem;
+      margin: 0 auto;
+      padding: 1rem 1.5rem 3.5rem;
+    }
+    .how h2 { font-size: 1.6rem; margin-bottom: 1.6rem; }
+    .step {
+      display: grid;
+      grid-template-columns: 5.5rem 1fr;
+      gap: 1.2rem;
+      padding: 1.1rem 0;
+      border-top: 1px solid var(--hairline);
+    }
+    .step:last-child { border-bottom: 1px solid var(--hairline); }
+    .step dt {
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      color: var(--quiet);
+      padding-top: 0.2rem;
+    }
+    .step dd strong { display: block; font-size: 1.05rem; margin-bottom: 0.15rem; }
+    .step dd { color: #3c3c43; }
+
+    /* ---- pro band ---- */
+    .pro {
+      background: var(--ink);
+      color: var(--paper);
+      padding: 3.5rem 1.5rem 4rem;
+    }
+    .pro-inner {
+      max-width: 62rem;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr minmax(200px, 260px);
+      gap: 3rem;
+      align-items: center;
+    }
+    .pro h2 { font-size: 1.9rem; }
+    .pro .once {
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--record);
+      margin-bottom: 0.8rem;
+    }
+    .pro ul { list-style: none; margin-top: 1.4rem; }
+    .pro li {
+      padding: 0.55rem 0;
+      border-top: 1px solid #26262a;
+      color: #d8d8dc;
+    }
+    .pro li strong { color: #fff; }
+    .pro li:last-child { border-bottom: 1px solid #26262a; }
+    .pro .price {
+      margin-top: 1.4rem;
+      color: #98989e;
+    }
+    .pro .price strong { color: #fff; font-size: 1.2rem; }
+    .pro img {
+      width: 100%;
+      border-radius: 22px;
+      border: 1px solid #26262a;
+    }
+
+    /* ---- get / footer ---- */
+    .get {
+      text-align: center;
+      padding: 3.5rem 1.5rem 2.5rem;
+    }
+    .get img.icon {
+      width: 84px;
+      height: 84px;
+      border-radius: 19px;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.16);
+    }
+    .get h2 { font-size: 1.5rem; margin-top: 1.1rem; }
+    .get p { color: var(--quiet); max-width: 30rem; margin: 0.4rem auto 1.4rem; }
+    .store-button {
+      display: inline-block;
+      background: var(--ink);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 0.9rem 1.9rem;
+      border-radius: 999px;
+    }
+    .store-button:hover { background: var(--record); }
+    .get .small-links { margin-top: 1.6rem; font-size: 0.92rem; }
+    .get .small-links a { color: var(--quiet); margin: 0 0.7rem; }
+    footer {
+      text-align: center;
+      color: #8a8a96;
+      font-size: 0.9rem;
+      padding: 1.5rem 1.5rem 3rem;
+    }
+    footer a { color: #8a8a96; }
+
+    @media (max-width: 720px) {
+      .sheet { grid-template-columns: repeat(2, 1fr); }
+      .loop-cell { grid-column: 1 / -1; }
+      .pro-inner { grid-template-columns: 1fr; }
+      .pro img { max-width: 260px; margin: 0 auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="masthead">
+    <h1 class="wordmark">Burst</h1>
+    <p class="tag">Hold the shutter, get thirty photos.<br>Burst turns them into one loop.</p>
+    <p class="sub">Burst photos, Live Photos, and short videos become looping GIFs and MP4s —
+    made on your iPhone, never uploaded anywhere.</p>
+  </header>
+
+  <div class="sheet" aria-label="A burst sequence of four frames, and the loop Burst makes from them">
+    <figure class="cell">
+      <img src="/assets/apps/burst/frame-1.jpg" alt="Burst frame 1: five groomsmen crouched, about to jump" loading="eager">
+      <figcaption>IMG_0344 · +0.0s</figcaption>
+    </figure>
+    <figure class="cell">
+      <img src="/assets/apps/burst/frame-2.jpg" alt="Burst frame 2: the group springing upwards" loading="eager">
+      <figcaption>IMG_0345 · +0.1s</figcaption>
+    </figure>
+    <figure class="cell">
+      <img src="/assets/apps/burst/frame-3.jpg" alt="Burst frame 3: everyone mid-air" loading="eager">
+      <figcaption>IMG_0346 · +0.2s</figcaption>
+    </figure>
+    <figure class="cell">
+      <img src="/assets/apps/burst/frame-4.jpg" alt="Burst frame 4: arms up at the top of the jump" loading="eager">
+      <figcaption>IMG_0347 · +0.3s</figcaption>
+    </figure>
+    <figure class="cell loop-cell">
+      <div class="loop">
+        <span class="loop-badge">LOOP</span>
+        <img src="/assets/apps/burst/frame-1.jpg" alt="">
+        <img src="/assets/apps/burst/frame-2.jpg" alt="">
+        <img src="/assets/apps/burst/frame-3.jpg" alt="">
+        <img src="/assets/apps/burst/frame-4.jpg" alt="" aria-hidden="true">
+      </div>
+      <figcaption class="loop-caption">burst.gif · what Burst makes</figcaption>
+    </figure>
+  </div>
+  <p class="sheet-note">Four frames, a third of a second apart — the kind of sequence
+  sitting in your camera roll right now. The last cell is the loop Burst makes from them.</p>
+
+  <section class="how">
+    <h2>How it works</h2>
+    <dl>
+      <div class="step">
+        <dt>PICK</dt>
+        <dd><strong>Choose any burst, Live Photo, or video</strong>
+        Burst finds everything animatable in your library and shows it in one grid.</dd>
+      </div>
+      <div class="step">
+        <dt>TUNE</dt>
+        <dd><strong>Loop it forward, in reverse, or bounce it</strong>
+        Set the speed from 0.5× to 2× and watch the loop update live — what you see is
+        exactly what you export.</dd>
+      </div>
+      <div class="step">
+        <dt>SHARE</dt>
+        <dd><strong>Send it anywhere</strong>
+        Export as GIF and drop it into Messages, WhatsApp, or Slack — there's an iMessage
+        extension for sending loops without leaving the conversation.</dd>
+      </div>
+    </dl>
+  </section>
+
+  <section class="pro">
+    <div class="pro-inner">
+      <div>
+        <p class="once">One purchase · no subscription</p>
+        <h2>Burst Pro</h2>
+        <ul>
+          <li><strong>No watermark</strong> on anything you export</li>
+          <li><strong>Your choice of quality</strong> — from share-friendly Small to Max resolution</li>
+          <li><strong>Video (MP4) export</strong> — smaller files, smoother playback</li>
+          <li><strong>Steady</strong> — one tap smooths out handheld camera shake</li>
+        </ul>
+        <p class="price"><strong>$4.99</strong> once. Yours forever.</p>
+      </div>
+      <img src="/assets/apps/burst/detail-screen.jpg"
+           alt="The Burst editor: a looping preview above loop style, speed, quality, and Steady controls">
+    </div>
+  </section>
+
+  <section class="get">
+    <img class="icon" src="/assets/apps/burst/icon.png" alt="">
+    <h2>Get Burst</h2>
+    <p>Free to use with unlimited exports. Everything happens on your device —
+    no account, no ads, no data collected.</p>
+    <a class="store-button" href="https://apps.apple.com/app/idTODO-APP-STORE-ID">Download on the App Store</a>
+    <p class="small-links">
+      <a href="/burst/support/">Support</a> ·
+      <a href="/burst/privacy/">Privacy</a>
+    </p>
+  </section>
+
+  <footer>
+    Burst is made by <a href="/">Otaku Development</a> in Bristol, UK.
+  </footer>
+
+</body>
+</html>
